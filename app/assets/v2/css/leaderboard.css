@@ -87,6 +87,9 @@
   opacity: 0.5;
   min-height: 23em;
 }
+#leaderboard .winner {
+  min-height: 23em;
+}
 
 #leaderboard .winner img:hover {
   opacity: 0.55;
