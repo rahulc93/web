@@ -292,7 +292,8 @@ $(document).ready(function() {
       var isETH = tokenAddress == '0x0000000000000000000000000000000000000000';
       var token_contract = web3.eth.contract(token_abi).at(tokenAddress);
       var account = web3.eth.coinbase;
-      if(!isETH){
+
+      if (!isETH) {
         check_balance_and_alert_user_if_not_enough(tokenAddress, amount);
       }
 
@@ -425,22 +426,25 @@ $(document).ready(function() {
   });
 });
 
-var check_balance_and_alert_user_if_not_enough = function(tokenAddress, amount){
-    var token_contract = web3.eth.contract(token_abi).at(tokenAddress);
-    var from = web3.eth.coinbase;
-    var token_details = tokenAddressToDetails(tokenAddress);
-    var token_decimals = token_details['decimals'];
-    var token_name = token_details['name'];
-    token_contract.balanceOf.call(from, function(error, result) {
-      if(error) return;
-      var balance = result.toNumber() / Math.pow(10, 18);
-      var balance_rounded = Math.round(balance * 10 ) / 10;
-      if(parseFloat(amount) > balance){
-        var msg = gettext("You do not have enough tokens to fund this bounty. You have ") + balance_rounded + " " + token_name + " " + gettext(" but you need ") + amount + " " + token_name;
-        _alert(msg, 'warning');
-      }
-    });
+var check_balance_and_alert_user_if_not_enough = function(tokenAddress, amount) {
+  var token_contract = web3.eth.contract(token_abi).at(tokenAddress);
+  var from = web3.eth.coinbase;
+  var token_details = tokenAddressToDetails(tokenAddress);
+  var token_decimals = token_details['decimals'];
+  var token_name = token_details['name'];
+
+  token_contract.balanceOf.call(from, function(error, result) {
+    if (error) return;
+    var balance = result.toNumber() / Math.pow(10, 18);
+    var balance_rounded = Math.round(balance * 10) / 10;
+
+    if (parseFloat(amount) > balance) {
+      var msg = gettext('You do not have enough tokens to fund this bounty. You have ') + balance_rounded + ' ' + token_name + ' ' + gettext(' but you need ') + amount + ' ' + token_name;
+
+      _alert(msg, 'warning');
+    }
+  });
 
 
-}
+};
 
